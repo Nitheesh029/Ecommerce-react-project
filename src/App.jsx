@@ -1,9 +1,15 @@
 import React from "react";
-
+import { Routes, Route, Outlet } from "react-router-dom";
+import { Header } from "./components";
+import { Home } from "./pages";
 function App() {
-  return <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+  return (
+    <>
+      <Header />
+      <Outlet />
+      <Home />
+    </>
+  );
 }
 
 export default App;
