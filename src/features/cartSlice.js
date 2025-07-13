@@ -1,7 +1,16 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  cart: [{ id: 1, imgUrl: "", price: 1000, quantity: 2, rating: 5 }],
+  cart: [
+    {
+      id: "12312fasdfasf",
+      name: "ball",
+      imgUrl: "",
+      price: 1000,
+      quantity: 2,
+      rating: 5,
+    },
+  ],
 };
 
 export const cartSlice = createSlice({
@@ -9,29 +18,29 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, action) => {
-      const { id, imgUrl, price, quantity, rating } = action.payload;
+      const { id, name, imgUrl, price, quantity = 1, rating } = action.payload;
 
-      const existingItem = state.cart.find(
-        (item) => item.imgUrl === imgUrl && item.price === price
-      );
+      if (!id) {
+        console.warn("❌ Tried to add item without ID:", action.payload);
+        return;
+      }
+
+      const existingItem = state.cart.find((item) => item.id === id);
+
       if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity += quantity;
       } else {
-        const newItem = {
-          id,
-          imgUrl,
-          price,
-          quantity,
-          rating,
-        };
-        state.cart.push(newItem);
+        state.cart.push({ id, name, imgUrl, price, quantity, rating });
       }
     },
+
     removeItem: (state, action) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload);
     },
+
     updateItem: (state, action) => {
       const { id, quantity } = action.payload;
+      if (!id) return;
       state.cart = state.cart.map((item) =>
         item.id === id ? { ...item, quantity } : item
       );

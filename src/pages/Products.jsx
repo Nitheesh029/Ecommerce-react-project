@@ -3,8 +3,9 @@ import { SlidersHorizontal, ArrowDownNarrowWide } from "lucide-react";
 import { Drawer } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space, Typography } from "antd";
-import { intermediateBasketball } from "../images/index";
 import { products } from "../data/products";
+import { useDispatch } from "react-redux";
+import { addItem } from "../features/cartSlice";
 const Products = () => {
   const [open, setOpen] = useState(false);
 
@@ -34,6 +35,23 @@ const Products = () => {
       label: "Top Seller",
     },
   ];
+
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (productToAdd) => {
+    if (!productToAdd) return;
+
+    dispatch(
+      addItem({
+        id: productToAdd.id,
+        name: productToAdd.name,
+        imgUrl: productToAdd.image,
+        price: productToAdd.priceCents,
+        quantity: 1,
+        rating: productToAdd.rating.stars,
+      })
+    );
+  };
 
   return (
     <div className="w-full bg-slate-50 h-full pt-10">
@@ -68,10 +86,10 @@ const Products = () => {
       <div className="mt-10 w-[90%] max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
           <div
-            className="bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 flex flex-col p-4 text-center h-96" // Fixed height
+            className="bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 flex flex-col p-4 text-center h-96"
             key={product.id}
+            product={product}
           >
-            {/* Fixed image container */}
             <div className="w-full h-48 flex items-center justify-center mb-4">
               <img
                 src={product.image}
@@ -106,7 +124,12 @@ const Products = () => {
                 </div>
               </div>
 
-              <button className="w-full bg-black text-white font-semibold py-2 rounded transition duration-200 hover:bg-gray-800 mt-auto">
+              <button
+                className="w-full bg-black text-white font-semibold py-2 rounded transition duration-200 hover:bg-gray-800 mt-auto"
+                onClick={() => {
+                  handleAddToCart(product);
+                }}
+              >
                 Add to Cart
               </button>
             </div>
