@@ -1,22 +1,23 @@
 import React, { useState } from "react";
-import { ShoppingCart, Menu, X, Home, Package } from "lucide-react";
+import { ShoppingCart, Menu, X, Home, Package, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import { Badge, Tooltip } from "antd";
 const Header = () => {
   const navItems = [
     { id: 1, name: "Home", url: "home", icon: Home },
     { id: 2, name: "Products", url: "products", icon: Package },
-    { id: 3, name: "Cart", url: "cart", icon: ShoppingCart },
+    { id: 3, name: "Favorite", url: "favoriteProducts", icon: Heart },
   ];
 
   const [activeItem, setActiveItem] = useState("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartQuantity, setCartQuantity] = useState(3);
 
   const isActive = (url) => activeItem === url;
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-full max-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center w-full">
+        <div className="flex justify-between md:justify-evenly h-16 items-center w-full">
           <div className="">
             <a href="#" className="text-2xl md:3xl font-bold text-purple-700">
               EssenceHub
@@ -43,8 +44,18 @@ const Header = () => {
               );
             })}
           </nav>
+          <div className="cursor-pointer hidden md:block">
+            <Badge count={cartQuantity}>
+              <ShoppingCart size={25} />
+            </Badge>
+          </div>
           {/* Mobile view */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-2">
+            <div className="cursor-pointer">
+              <Badge count={cartQuantity}>
+                <ShoppingCart size={25} />
+              </Badge>
+            </div>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-full text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors"

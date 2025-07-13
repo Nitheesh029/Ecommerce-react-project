@@ -9,7 +9,13 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { Home, Products, Cart, ProductDetails } from "./pages";
+import {
+  Home,
+  Products,
+  Cart,
+  ProductDetails,
+  FavoriteProducts,
+} from "./pages";
 
 export const productDetailsLoader = async ({ params }) => {
   const response = await fetch(
@@ -37,6 +43,7 @@ const router = createBrowserRouter(
         loader={productDetailsLoader}
       />
       <Route path="cart" element={<Cart />} />
+      <Route path="favoriteProducts" element={<FavoriteProducts />} />
     </Route>
   )
 );
