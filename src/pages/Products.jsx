@@ -2,13 +2,23 @@ import React, { useState } from "react";
 import { SlidersHorizontal, ArrowDownNarrowWide } from "lucide-react";
 import { Drawer } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Space, Typography } from "antd";
+import { Dropdown, message } from "antd";
 import { products } from "../data/products";
 import { useDispatch } from "react-redux";
 import { addItem } from "../features/cartSlice";
 const Products = () => {
   const [open, setOpen] = useState(false);
-
+  const [messageApi, contextHolder] = message.useMessage();
+  const success = () => {
+    message.config({
+      top: 300,
+    });
+    messageApi.open({
+      type: "success",
+      content: "Added to Cart!",
+      duration: 1,
+    });
+  };
   const showDrawer = () => {
     setOpen(true);
   };
@@ -123,11 +133,12 @@ const Products = () => {
                   ${(product.priceCents / 100).toFixed(2)}
                 </div>
               </div>
-
+              {contextHolder}
               <button
                 className="w-full bg-black text-white font-semibold py-2 rounded transition duration-200 hover:bg-gray-800 mt-auto"
                 onClick={() => {
                   handleAddToCart(product);
+                  success();
                 }}
               >
                 Add to Cart
