@@ -1,4 +1,7 @@
+import { useSelector } from "react-redux";
+import { selectTotalQuantity } from "../features/cartSlice";
 function Cart() {
+  const totalQuantity = useSelector(selectTotalQuantity);
   return (
     <div
       className="mt-10 h-full max-w-[80%] mx-auto 
@@ -6,7 +9,7 @@ function Cart() {
     >
       <div className="flex-1 flex-col h-full">
         <div className="text-2xl md:text-3xl lg:text-4xl font-semibold text-black">
-          Cart
+          Cart({totalQuantity})
         </div>
         <div></div>
       </div>
@@ -19,7 +22,7 @@ function Cart() {
             <p>Subtotal</p>
             <p>1000</p>
           </div>
-          <div className="flex justify-between border-b-2 text-lg font-semibold border-slate-900">
+          <div className="flex justify-between border-b-2 text-lg font-semibold border-slate-900 pb-4">
             <p>Tax(10%)</p>
             <p>100</p>
           </div>

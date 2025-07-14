@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import { ShoppingCart, Menu, X, Home, Package, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge, Tooltip } from "antd";
+import { useSelector } from "react-redux";
+import {
+  selectCartItems,
+  selectTotalQuantity,
+  selectCartTotal,
+} from "../features/cartSlice";
 const Header = () => {
   const navItems = [
     { id: 1, name: "Home", url: "home", icon: Home },
@@ -11,7 +17,8 @@ const Header = () => {
 
   const [activeItem, setActiveItem] = useState("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartQuantity, setCartQuantity] = useState(3);
+  const totalQuantity = useSelector(selectTotalQuantity);
+  console.log(totalQuantity);
 
   const isActive = (url) => activeItem === url;
   return (
@@ -44,18 +51,18 @@ const Header = () => {
               );
             })}
           </nav>
-          <div className="cursor-pointer hidden md:block">
-            <Badge count={cartQuantity}>
+          <Link to={"cart"} className="cursor-pointer hidden md:block">
+            <Badge count={totalQuantity}>
               <ShoppingCart size={25} />
             </Badge>
-          </div>
+          </Link>
           {/* Mobile view */}
           <div className="md:hidden flex items-center gap-2">
-            <div className="cursor-pointer">
-              <Badge count={cartQuantity}>
+            <Link to={"cart"} className="cursor-pointer">
+              <Badge count={totalQuantity}>
                 <ShoppingCart size={25} />
               </Badge>
-            </div>
+            </Link>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-full text-gray-700 hover:text-indigo-600 hover:bg-gray-100 transition-colors"
