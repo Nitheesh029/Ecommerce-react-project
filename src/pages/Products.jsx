@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SlidersHorizontal, ArrowDownNarrowWide } from "lucide-react";
 import { Drawer } from "antd";
 import { DownOutlined } from "@ant-design/icons";
@@ -9,6 +9,24 @@ import { addItem } from "../features/cartSlice";
 const Products = () => {
   const [open, setOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const [productArray, setProductArray] = useState(products);
+  const [selectedSortKey, setSelectedSortKey] = useState("1");
+  useEffect(() => {
+    if (selectedSortKey === "4") {
+      const sortByRating = [...products].sort(
+        (a, b) => b.rating.stars - a.rating.stars
+      );
+      setProductArray(sortByRating);
+    } else if (selectedSortKey === "2") {
+      const sorted = [...products].sort((a, b) => a.priceCents - b.priceCents);
+      setProductArray(sorted);
+    } else if (selectedSortKey === "3") {
+      const sorted = [...products].sort((a, b) => b.priceCents - a.priceCents);
+      setProductArray(sorted);
+    } else {
+      setProductArray(products);
+    }
+  }, [selectedSortKey]);
   const success = () => {
     message.config({
       top: 300,
@@ -63,6 +81,11 @@ const Products = () => {
     );
   };
 
+  const handleSortChange = ({ key }) => {
+    console.log("Selected sort key:", key);
+    setSelectedSortKey(key);
+  };
+
   return (
     <div className="w-full bg-slate-50 h-full pt-10">
       <div className="w-[80%] md:max-w-7xl h-16 bg-white shadow-sm mx-auto flex items-center justify-between px-5 md:px-10 rounded-md">
@@ -78,7 +101,8 @@ const Products = () => {
             menu={{
               items: sortItems,
               selectable: true,
-              defaultSelectedKeys: ["3"],
+              defaultSelectedKeys: [selectedSortKey],
+              onClick: handleSortChange,
             }}
           >
             Sort by
@@ -94,7 +118,7 @@ const Products = () => {
         ></Drawer>
       </div>
       <div className="mt-10 w-[90%] max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
+        {productArray.map((product) => (
           <div
             className="bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 flex flex-col p-4 text-center h-96"
             key={product.id}
