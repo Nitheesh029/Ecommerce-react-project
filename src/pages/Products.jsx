@@ -132,7 +132,6 @@ const Products = () => {
               />
             </div>
 
-            {/* Content container with flex-grow to fill remaining space */}
             <div className="flex-grow flex flex-col justify-between min-h-0">
               <div className="flex-grow">
                 <div className="w-full flex items-start justify-between mb-2">
@@ -141,7 +140,7 @@ const Products = () => {
                   </h3>
                   <div className="flex flex-col items-end">
                     <img
-                      src={`src/images/ratings/rating-${
+                      src={`images/ratings/rating-${
                         product.rating.stars * 10
                       }.png`}
                       alt={`${product.rating.stars} stars`}
